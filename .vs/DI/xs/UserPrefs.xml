@@ -1,0 +1,19 @@
+﻿<Properties StartupConfiguration="{60662F05-A62D-4E85-B282-0FD7D2DEEFC8}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="DI/NDatabase/ClientSQL.cs">
+    <Files>
+      <File FileName="DI/Saver/ExcelSaver.cs" Line="22" Column="15" />
+      <File FileName="DI/Saver/PDFSaver.cs" Line="5" Column="2" />
+      <File FileName="DI/WindowTable.cs" Line="183" Column="1" />
+      <File FileName="DI/MainWindow.cs" Line="33" Column="23" />
+      <File FileName="DI/WindowAddValue.cs" Line="43" Column="13" />
+      <File FileName="DI/NDatabase/ClientSQL.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.DI PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

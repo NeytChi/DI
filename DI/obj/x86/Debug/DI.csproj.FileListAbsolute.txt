@@ -1,0 +1,12 @@
+/home/neytchi/Projects/DI/DI/bin/Debug/DI.exe
+/home/neytchi/Projects/DI/DI/bin/Debug/DI.pdb
+/home/neytchi/Projects/DI/DI/obj/x86/Debug/DI.csprojAssemblyReference.cache
+/home/neytchi/Projects/DI/DI/obj/x86/Debug/DI.csproj.CoreCompileInputs.cache
+/home/neytchi/Projects/DI/DI/obj/x86/Debug/DI.exe
+/home/neytchi/Projects/DI/DI/obj/x86/Debug/DI.pdb
+/home/neytchi/Projects/DI/DI/bin/Debug/Google.Protobuf.dll
+/home/neytchi/Projects/DI/DI/bin/Debug/MySql.Data.dll
+/home/neytchi/Projects/DI/DI/bin/Debug/Google.Protobuf.xml
+/home/neytchi/Projects/DI/DI/bin/Debug/MySql.Data.xml
+/home/neytchi/Projects/DI/DI/obj/x86/Debug/DI.csproj.CopyComplete
+/home/neytchi/Projects/DI/DI/bin/Debug/Xceed.Words.NET.dll
