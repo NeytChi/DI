@@ -94,21 +94,28 @@ namespace DI
             List<List<string>> colums = new List<List<string>>();
             TreeStore listStore = new TreeStore
             (
-                typeof(string), typeof(string), typeof(string), typeof(string), typeof(string),
-                typeof(string), typeof(string), typeof(string), typeof(string), typeof(string)            
+                typeof(string), typeof(string), 
+                typeof(string), typeof(string), 
+                typeof(string), typeof(string), 
+                typeof(string), typeof(string), 
+                typeof(string), typeof(string)
             );
+            listStore.ColumnTypes = new GLib.GType[10];
             treeview2.Model = listStore;
             foreach (string describe in describes)
             {
-                colums.Add(ClientConnection.client.SelectColumTable(CurrentTable, describe, 0));
+                colums.Add(ClientConnection.client.SelectColumTable(CurrentTable, describe, 1));
             }
             colums = ReSetTableCells(colums);
-            foreach (List<string> colum in colums)
+            foreach (List<string> row in colums)
             {
                 listStore.AppendValues
                 (
-                    colum[0], colum[1], colum[2], colum[3], colum[4], 
-                    colum[5], colum[6], colum[7], colum[8], colum[9]
+                    row[0], row[1], 
+                    row[2], row[3],
+                    row[4], row[5], 
+                    row[6], row[7], 
+                    row[8], row[9]
                 );
             }
             foreach (string describe in describes)
@@ -176,9 +183,7 @@ namespace DI
         }
         protected void OnButton2Pressed(object sender, EventArgs e)
         {
-            List<string> values = new List<string>();
-            List<string> describes = ClientConnection.client.DescribeCurrentTable(CurrentTable);
-            WindowAddValue windowValue = new WindowAddValue(this, describes);
+            WindowAddValue windowValue = new WindowAddValue(this, CurrentTable);
             Logger.WriteLog("Init windows create value table.", LogLevel.Usual);
         }
         protected void OnButton4Pressed(object sender, EventArgs e)
@@ -198,6 +203,8 @@ namespace DI
         }
         protected void OnButton7Pressed(object sender, EventArgs e)
         {
+            ISaverDatabase saver = new PDFSaver(ClientConnection.client);
+            saver.SaveDatabase(SelectedDatabase);
             Logger.WriteLog("Save database as PDF format.", LogLevel.Usual);
         }
     }

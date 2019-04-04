@@ -105,22 +105,31 @@ namespace DI.NDatabase
         }
         public List<string> SelectColumTable(string table, string colum, int from)
         {
-            int index = 0;
             int range_from = from * 20;
-            List<string> values  = new List<string>();
+            List<string> values = new List<string>();
             lock (locker)
             {
                 using (MySqlCommand sqlCommand = new MySqlCommand("SELECT " + colum + " FROM " + table + ";", connection))
                 {
                     using (MySqlDataReader reader = sqlCommand.ExecuteReader())
                     {
-                        while (reader.Read())
+                        for (int i = 0; i < range_from; i++)
                         {
-                            if (index >= range_from && index < (range_from + 20))
+                            if (reader.Read())
                             {
-                                values.Add(reader.GetString(0));
+                                if (reader.IsDBNull(0))
+                                {
+                                    values.Add("");
+                                }
+                                else
+                                {
+                                    values.Add(reader.GetString(0));
+                                }
                             }
-                            ++index;
+                            else
+                            {
+                                break;
+                            }
                         }
                     }
                 }

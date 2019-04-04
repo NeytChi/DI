@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using DI.NDatabase;
+using OfficeOpenXml;
 using System.Collections.Generic;
 
 namespace DI.Saver
@@ -13,12 +14,20 @@ namespace DI.Saver
         {
             this.clientSQL = clientSQL;
         }
-
         public void SaveDatabase(string database)
         {
             string name = DateTime.Now.ToString();
             string path = Directory.GetCurrentDirectory() + "/Saves/Word/";
             Directory.CreateDirectory(path);
+            using (ExcelPackage excel = new ExcelPackage())
+            {
+                excel.Workbook.Worksheets.Add("Worksheet1");
+                ExcelWorksheet worksheet = excel.Workbook.Worksheets["Worksheet1"];
+                //worksheet.Cells[]
+
+                FileInfo excelFile = new FileInfo(path + name);
+                excel.SaveAs(excelFile);
+            }
             //DocX document = DocX.Create(path + name, DocumentTypes.Document);
             //document.SaveAs(path + name + ".docx");
             List<string> tables = clientSQL.ShowTables();
