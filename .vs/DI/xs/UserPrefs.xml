@@ -1,9 +1,10 @@
 ﻿<Properties StartupConfiguration="{60662F05-A62D-4E85-B282-0FD7D2DEEFC8}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="DI/WindowTable.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="DI/WindowAddValue.cs">
     <Files>
-      <File FileName="DI/WindowAddValue.cs" Line="4" Column="24" />
-      <File FileName="DI/NDatabase/ClientSQL.cs" Line="47" Column="10" />
-      <File FileName="DI/WindowTable.cs" Line="185" Column="10" />
+      <File FileName="DI/gtk-gui/DI.WindowAddValue.cs" Line="1" Column="1" />
+      <File FileName="DI/NDatabase/ClientSQL.cs" Line="197" Column="27" />
+      <File FileName="DI/WindowTable.cs" Line="86" Column="15" />
+      <File FileName="DI/WindowAddValue.cs" Line="67" Column="14" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.ItemProperties.DI PreferredExecutionTarget="MonoDevelop.Default" />

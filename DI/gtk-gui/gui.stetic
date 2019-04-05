@@ -608,6 +608,15 @@
             <property name="Y">106</property>
           </packing>
         </child>
+        <child>
+          <widget class="Gtk.Label" id="label11">
+            <property name="MemberName" />
+          </widget>
+          <packing>
+            <property name="X">13</property>
+            <property name="Y">15</property>
+          </packing>
+        </child>
       </widget>
     </child>
   </widget>

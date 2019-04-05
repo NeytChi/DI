@@ -2,8 +2,8 @@
 using Common;
 using System;
 using Common.NDatabase;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace DI
 {
@@ -12,20 +12,22 @@ namespace DI
         public WindowTable windowTable;
         public List<Label> labels = new List<Label>();
         public List<Entry> entries = new List<Entry>();
-        public List<string> describes;
+        WindowTable table;
         public string CurrentTable;
 
-        public WindowAddValue(WindowTable windowTable, string CurrentTable)
+        public WindowAddValue(WindowTable windowTable, string CurrentTable, WindowTable table)
          : base(Gtk.WindowType.Toplevel)
         {
-            this.describes = ClientConnection.client.DescribeCurrentTable(CurrentTable);
+            this.table = table;
+            this.CurrentTable = CurrentTable;
+            List<string> describes = ClientConnection.client.DescribeCurrentTable(CurrentTable);
             this.windowTable = windowTable;
             this.Build();
             ControlForm();
-            EditForm();
+            EditForm(describes);
             Logger.WriteLog("Init add value window.", LogLevel.Usual);
         }
-        private void EditForm()
+        private void EditForm(List<string> describes)
         {
             for (int i = 0; i < describes.Count; i++)
             {
@@ -41,13 +43,73 @@ namespace DI
         }
         protected void OnButton1Pressed(object sender, EventArgs e)
         {
-            Dictionary<string, Type> typeColumns = ClientConnection.client.DescribeTypeTable(CurrentTable);
-            foreach(KeyValuePair<string,Type> keyValuePair in typeColumns)
+            int index = 0;
+            bool exit = true;
+            List<string> describes = ClientConnection.client.DescribeCurrentTable(CurrentTable);
+            List<dynamic> record = new List<dynamic>();
+            Dictionary<string, TypeCode> typeColumns = ClientConnection.client.DescribeTypeTable(CurrentTable);
+            foreach (KeyValuePair<string, TypeCode> column in typeColumns)
             {
-
+                string entryText = entries[index].Text;
+                ++index;
+                dynamic value = null;
+                if (ConvertToTypeValue(entryText, ref value, column.Value))
+                {
+                    record.Add(value);
+                }
+                else
+                {
+                    ErrorInsertEntryValue(column.Key);
+                    exit = false;
+                }
             }
-            Hide();
-            Dispose();
+            if (exit)
+            {
+                ClientConnection.client.InsertValueToTable(record, describes, CurrentTable);
+                Hide();
+                table.SelectRowColums();
+                Logger.WriteLog("Insert record to table->" + CurrentTable, LogLevel.Usual);
+                Dispose();
+            }
+        }
+        public void ErrorInsertEntryValue(string errorEntry)
+        {
+            label11.Text = "False insert value. Column->" + errorEntry + ".";
+            Logger.WriteLog("False insert value. Column->" + errorEntry + ".", LogLevel.Warning);
+        }
+        private bool ConvertToTypeValue(string text, ref dynamic value, TypeCode type)
+        {
+            switch (type)
+            {
+                case TypeCode.String:
+                    value = text;
+                    return true;
+                case TypeCode.Int32:
+                    int x = 0;
+                    if (Int32.TryParse(text, out x))
+                    {
+                        value = x;
+                        return true;
+                    }
+                    else
+                    {
+                        Logger.WriteLog("Error with convert string->int.", LogLevel.Warning);
+                        return false;
+                    }
+                case TypeCode.Int64:
+                    long y = 0;
+                    if (Int64.TryParse(text, out y))
+                    {
+                        value = y;
+                        return true;
+                    }
+                    else
+                    {
+                        Logger.WriteLog("Error with convert string->long.", LogLevel.Warning);
+                        return false;
+                    }
+                default: return false;
+            }
         }
         private void ControlForm()
         {

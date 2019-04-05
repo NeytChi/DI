@@ -48,6 +48,8 @@ namespace DI
 
 		private global::Gtk.Label label2;
 
+		private global::Gtk.Label label11;
+
 		protected virtual void Build()
 		{
 			global::Stetic.Gui.Initialize(this);
@@ -269,6 +271,13 @@ namespace DI
 			global::Gtk.Fixed.FixedChild w21 = ((global::Gtk.Fixed.FixedChild)(this.fixed1[this.label2]));
 			w21.X = 10;
 			w21.Y = 106;
+			// Container child fixed1.Gtk.Fixed+FixedChild
+			this.label11 = new global::Gtk.Label();
+			this.label11.Name = "label11";
+			this.fixed1.Add(this.label11);
+			global::Gtk.Fixed.FixedChild w22 = ((global::Gtk.Fixed.FixedChild)(this.fixed1[this.label11]));
+			w22.X = 13;
+			w22.Y = 15;
 			this.Add(this.fixed1);
 			if ((this.Child != null))
 			{

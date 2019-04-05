@@ -83,7 +83,7 @@ namespace DI
                 SelectRowColums();
             }
         }
-        private void SelectRowColums()
+        public void SelectRowColums()
         {
             int index = 0;
             foreach(TreeViewColumn treeViewColumn in cellsTreeView)
@@ -183,7 +183,7 @@ namespace DI
         }
         protected void OnButton2Pressed(object sender, EventArgs e)
         {
-            WindowAddValue windowValue = new WindowAddValue(this, CurrentTable);
+            WindowAddValue windowValue = new WindowAddValue(this, CurrentTable, this);
             Logger.WriteLog("Init windows create value table.", LogLevel.Usual);
         }
         protected void OnButton4Pressed(object sender, EventArgs e)

@@ -81,9 +81,9 @@ namespace DI.NDatabase
             Logger.WriteLog("Describe Current Table.", LogLevel.Usual);
             return describe;
         }
-        public Dictionary<string, Type> DescribeTypeTable(string table)
+        public Dictionary<string, TypeCode> DescribeTypeTable(string table)
         {
-            Dictionary<string,Type> describe = new Dictionary<string, Type>();
+            Dictionary<string, TypeCode> describe = new Dictionary<string, TypeCode>();
             lock (locker)
             {
                 using (MySqlCommand sqlCommand = new MySqlCommand("SELECT column_name, data_type" +
@@ -95,7 +95,21 @@ namespace DI.NDatabase
                     {
                         while (reader.Read())
                         {
-                            describe.Add(reader.GetString(0), reader.GetFieldType(1));
+                            switch (reader.GetString(1))
+                            {
+                                case "varchar":
+                                    describe.Add(reader.GetString(0), TypeCode.String);
+                                    break;
+                                case "int":
+                                    describe.Add(reader.GetString(0), TypeCode.Int32);
+                                    break;
+                                case "text":
+                                    describe.Add(reader.GetString(0), TypeCode.String);
+                                    break;
+                                case "long":
+                                    describe.Add(reader.GetString(0), TypeCode.Int64);
+                                    break;
+                            }
                         }
                     }
                 }
@@ -164,13 +178,82 @@ namespace DI.NDatabase
                 sqlCommand.ExecuteNonQuery();
                 sqlCommand.Dispose();
             }
-            using (MySqlCommand sqlCommand = new MySqlCommand("GRANT ALL PRIVILEGES ON * . * TO '" + userName + "'@'localhost';"
-            , connection))
+            using (MySqlCommand sqlCommand = new MySqlCommand("GRANT ALL PRIVILEGES ON * . * TO '" + userName + "'@'localhost';", connection))
             {
                 sqlCommand.ExecuteNonQuery();
                 sqlCommand.Dispose();
             }
             Logger.WriteLog("Create user, user_name->" + userName + ".", LogLevel.Usual);
         }
+        public void InsertValueToTable(List<dynamic> cells, List<string> describes, string table)
+        {
+            string request = null;
+            string values = null;
+            string insertinto = null;
+            lock (locker)
+            {
+                for (int i = 0; i < describes.Count; i++)
+                {
+                    if (insertinto == null)
+                    {
+                        insertinto = "INSERT INTO " + table + " (";
+                        insertinto += describes[i];
+                    }
+                    else
+                    {
+                        insertinto += ", " + describes[i];
+                    }
+                }
+                for (int i = 0; i < cells.Count; i++)
+                {
+                    if (values == null)
+                    {
+                        values = ") VALUES ( ";
+                        values += "@param" + i.ToString();
+                    }
+                    else
+                    {
+                        values += ", @param" + i.ToString();
+                    }
+                }
+                request = insertinto + values + ");";
+                using (MySqlCommand sqlCommand = new MySqlCommand(request, connection))
+                {
+                    for (int i = 0; i < cells.Count; i++)
+                    {
+                        sqlCommand.Parameters.AddWithValue("@param" + i, cells[i]);
+                    }
+                    sqlCommand.ExecuteNonQuery();
+                    sqlCommand.Dispose();
+                }
+            }
+        }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
