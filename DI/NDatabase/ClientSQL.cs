@@ -62,7 +62,7 @@ namespace DI.NDatabase
             Logger.WriteLog("Show tables.", LogLevel.Usual);
             return tables;
         }
-        public List<string> DescribeCurrentTable(string table)
+        public List<string> DescribeTable(string table)
         {
             List<string> describe = new List<string>();
             lock (locker)
@@ -87,9 +87,9 @@ namespace DI.NDatabase
             lock (locker)
             {
                 using (MySqlCommand sqlCommand = new MySqlCommand("SELECT column_name, data_type" +
-            	" from information_schema.columns" +
-            	" where table_schema = 'repair_work'" +
-            	" AND table_name = 'repair_table';", connection))
+                " from information_schema.columns" +
+                " where table_schema = 'repair_work'" +
+                " AND table_name = 'repair_table';", connection))
                 {
                     using (MySqlDataReader reader = sqlCommand.ExecuteReader())
                     {
@@ -162,7 +162,14 @@ namespace DI.NDatabase
                     {
                         while (reader.Read())
                         {
-                            values.Add(reader.GetString(0));
+                            if (reader.IsDBNull(0))
+                            {
+                                values.Add("NULL");
+                            }
+                            else
+                            {
+                                values.Add(reader.GetString(0));
+                            }
                         }
                     }
                 }
@@ -173,7 +180,7 @@ namespace DI.NDatabase
         public void CreateUser(string userName, string userPassword)
         {
             using (MySqlCommand sqlCommand = new MySqlCommand("CREATE USER '" + userName + "'@'localhost' " +
-            	" IDENTIFIED BY '" + userPassword +  "';", connection))
+                " IDENTIFIED BY '" + userPassword +  "';", connection))
             {
                 sqlCommand.ExecuteNonQuery();
                 sqlCommand.Dispose();
@@ -227,6 +234,36 @@ namespace DI.NDatabase
                     sqlCommand.Dispose();
                 }
             }
+        }
+        public void DeleteCell(List<string> values, List<string> describes, string table)
+        {
+            string valuesWhere = null;
+            string delete = "DELETE FROM " + table + " WHERE ";
+            lock (locker)
+            {
+                for (int i = 0; i < describes.Count; i++)
+                {
+                    if (valuesWhere == null)
+                    {
+                        valuesWhere = describes[i] + "=@param" + i.ToString();
+                    }
+                    else
+                    {
+                        valuesWhere += " AND " + describes[i] + "=@param" + i.ToString();
+                    }
+                }
+                delete += valuesWhere + ";";
+                using (MySqlCommand sqlCommand = new MySqlCommand(delete, connection))
+                {
+                    for (int i = 0; i < describes.Count; i++)
+                    {
+                        sqlCommand.Parameters.AddWithValue("@param" + i.ToString(), values[i]);
+                    }
+                    sqlCommand.ExecuteNonQuery();
+                    sqlCommand.Dispose();
+                }
+            }
+            Logger.WriteLog("Delete record from table->" + table, LogLevel.Usual);
         }
     }
 }

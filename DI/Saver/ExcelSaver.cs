@@ -33,7 +33,7 @@ namespace DI.Saver
                 for (int i = 0; i < tables.Count; i++)
                 {
                     List<List<string>> tableData = new List<List<string>>();
-                    List<string> columns = clientSQL.DescribeCurrentTable(tables[i]);
+                    List<string> columns = clientSQL.DescribeTable(tables[i]);
                     for (int j = 0; j < columns.Count; j++)
                     {
                         List<string> columData = clientSQL.SelectColumTable(tables[i], columns[j]);

@@ -25,7 +25,7 @@ namespace DI.Saver
             foreach (string table in tables)
             {
                 List<List<string>> columsData = new List<List<string>>();
-                List<string> describeTable = clientSQL.DescribeCurrentTable(table);
+                List<string> describeTable = clientSQL.DescribeTable(table);
                 foreach(string describe in describeTable)
                 {
                     List<string> columData = clientSQL.SelectColumTable(table, describe);

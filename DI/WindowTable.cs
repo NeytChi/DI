@@ -19,6 +19,7 @@ namespace DI
         public string CurrentTable;
         public TreeView databaseTree;
         public List<TreeViewColumn> cellsTreeView = new List<TreeViewColumn>();
+        public List<string> values;
 
         public WindowTable() : base(WindowType.Toplevel)
         {
@@ -83,6 +84,12 @@ namespace DI
                 SelectRowColums();
             }
         }
+        /// <summary>
+        /// Selects the row colums of current table.
+        /// The function is written with a crutch. There are no tools for writing a dynamic tree filling. 
+        /// There is a mandatory binding to the types of parameters at the beginning of the creation of the (TreeStore listStore = new TreeStore (typeof (string))).
+        /// Therefore, although the program works, it is not suitable for use.
+        /// </summary>
         public void SelectRowColums()
         {
             int index = 0;
@@ -90,7 +97,7 @@ namespace DI
             {
                 treeview2.RemoveColumn(treeViewColumn);
             }
-            List<string> describes = ClientConnection.client.DescribeCurrentTable(CurrentTable);
+            List<string> describes = ClientConnection.client.DescribeTable(CurrentTable);
             List<List<string>> colums = new List<List<string>>();
             TreeStore listStore = new TreeStore
             (
@@ -100,7 +107,6 @@ namespace DI
                 typeof(string), typeof(string), 
                 typeof(string), typeof(string)
             );
-            listStore.ColumnTypes = new GLib.GType[10];
             treeview2.Model = listStore;
             foreach (string describe in describes)
             {
@@ -109,6 +115,10 @@ namespace DI
             colums = ReSetTableCells(colums);
             foreach (List<string> row in colums)
             {
+                for (int i = row.Count; i < 10; i++) 
+                {
+                    if (i < 10) { row.Add(""); } 
+                }
                 listStore.AppendValues
                 (
                     row[0], row[1], 
@@ -208,6 +218,31 @@ namespace DI
             ISaverDatabase saver = new PDFSaver(ClientConnection.client);
             saver.SaveDatabase(SelectedDatabase);
             Logger.WriteLog("Save database as PDF format.", LogLevel.Usual);
+        }
+        protected void OnButton3Pressed(object sender, EventArgs e)
+        {
+            List<string> describes = ClientConnection.client.DescribeTable(CurrentTable);
+            if (values == null)
+            {
+                Logger.WriteLog("Record is not selected.", LogLevel.Warning);
+                return;
+            }
+            ClientConnection.client.DeleteCell(values, describes, CurrentTable);
+            SelectRowColums();
+            Logger.WriteLog("Delete cell from table->" + CurrentTable +".", LogLevel.Usual);
+        }
+        protected void OnTreeview2RowActivated(object o, RowActivatedArgs args)
+        {
+            TreeIter iter;
+            TreeModel model = treeview2.Model;
+            model.GetIter(out iter, args.Path);
+            List<string> record = new List<string>();
+            for (int i = 0; i < 10; i++)
+            {
+                var value = model.GetValue(iter, i);
+                record.Add(value.ToString());
+            }
+            values = record;
         }
     }
 }

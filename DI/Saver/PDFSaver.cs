@@ -32,7 +32,7 @@ namespace DI.Saver
             List<string> tables = ClientConnection.client.ShowTables();
             for (int i = 0; i < tables.Count; i++)
             {
-                List<string> describes = ClientConnection.client.DescribeCurrentTable(tables[i]);
+                List<string> describes = ClientConnection.client.DescribeTable(tables[i]);
                 PdfPTable table = new PdfPTable(describes.Count);
                 PdfPCell cell = new PdfPCell(new Phrase("Database " + database + ", table №" + i));
                 cell.Colspan = describes.Count;

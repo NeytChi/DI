@@ -178,6 +178,7 @@
                 <property name="ShowScrollbars">True</property>
                 <property name="Reorderable">True</property>
                 <property name="RulesHint">True</property>
+                <signal name="RowActivated" handler="OnTreeview2RowActivated" />
               </widget>
             </child>
           </widget>
@@ -227,6 +228,7 @@
             <property name="Type">TextOnly</property>
             <property name="Label" translatable="yes">Видалити запис</property>
             <property name="UseUnderline">True</property>
+            <signal name="Pressed" handler="OnButton3Pressed" />
           </widget>
           <packing>
             <property name="X">25</property>

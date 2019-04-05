@@ -174,8 +174,10 @@ namespace DI
 			this.Show();
 			this.DeleteEvent += new global::Gtk.DeleteEventHandler(this.OnDeleteEvent);
 			this.treeview1.RowActivated += new global::Gtk.RowActivatedHandler(this.OnTreeview1RowActivated);
+			this.treeview2.RowActivated += new global::Gtk.RowActivatedHandler(this.OnTreeview2RowActivated);
 			this.button1.Pressed += new global::System.EventHandler(this.OnButton1Pressed);
 			this.button2.Pressed += new global::System.EventHandler(this.OnButton2Pressed);
+			this.button3.Pressed += new global::System.EventHandler(this.OnButton3Pressed);
 			this.button4.Pressed += new global::System.EventHandler(this.OnButton4Pressed);
 			this.button6.Pressed += new global::System.EventHandler(this.OnButton6Pressed);
 			this.button5.Pressed += new global::System.EventHandler(this.OnButton5Pressed);
