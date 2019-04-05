@@ -20,7 +20,7 @@ namespace DI
         {
             this.table = table;
             this.CurrentTable = CurrentTable;
-            List<string> describes = ClientConnection.client.DescribeCurrentTable(CurrentTable);
+            List<string> describes = ClientConnection.client.DescribeTable(CurrentTable);
             this.windowTable = windowTable;
             this.Build();
             ControlForm();
@@ -45,7 +45,7 @@ namespace DI
         {
             int index = 0;
             bool exit = true;
-            List<string> describes = ClientConnection.client.DescribeCurrentTable(CurrentTable);
+            List<string> describes = ClientConnection.client.DescribeTable(CurrentTable);
             List<dynamic> record = new List<dynamic>();
             Dictionary<string, TypeCode> typeColumns = ClientConnection.client.DescribeTypeTable(CurrentTable);
             foreach (KeyValuePair<string, TypeCode> column in typeColumns)
