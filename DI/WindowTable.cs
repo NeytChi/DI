@@ -199,6 +199,8 @@ namespace DI
         }
         protected void OnButton5Pressed(object sender, EventArgs e)
         {
+            ISaverDatabase saver = new ExcelSaver(ClientConnection.client);
+            saver.SaveDatabase(SelectedDatabase);
             Logger.WriteLog("Save database as Excel format.", LogLevel.Usual);
         }
         protected void OnButton7Pressed(object sender, EventArgs e)

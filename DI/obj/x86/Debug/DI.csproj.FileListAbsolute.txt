@@ -11,3 +11,5 @@
 /home/neytchi/Projects/DI/DI/obj/x86/Debug/DI.csproj.CopyComplete
 /home/neytchi/Projects/DI/DI/bin/Debug/Xceed.Words.NET.dll
 /home/neytchi/Projects/DI/DI/bin/Debug/itextsharp.dll
+/home/neytchi/Projects/DI/DI/bin/Debug/EPPlus.dll
+/home/neytchi/Projects/DI/DI/bin/Debug/EPPlus.xml
